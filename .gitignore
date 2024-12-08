@@ -1,0 +1,54 @@
+# Django specific
+*.log
+*.pot
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+
+# Environment files
+.env
+.venv/
+venv/
+env/
+venv.bak/
+env.bak/
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python specific
+*.egg-info/
+.eggs/
+dist/
+build/
+*.bak
+*.swp
+
+# coverage reports
+.coverage
+*.coveragerc
+
+# pytest
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
