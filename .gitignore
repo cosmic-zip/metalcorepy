@@ -52,3 +52,6 @@ dmypy.json
 # Django migrations
 */migrations/*
 !*/migrations/__init__.py
+
+# IDE's bs
+.ropeproject/

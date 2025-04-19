@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
     build: ./app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --workers 4 --bind 0.0.0.0:8000 --timeout 30 --log-level info core.wsgi:application
     volumes:
       - ./app/:/usr/src/app/
     ports:
