@@ -53,7 +53,10 @@ else:
 # Application definition
 
 CUSTOM_APPS = [
-
+    'infrastructure',
+    'shared',
+    'domains',
+    'interfaces',
 ]
 
 INSTALLED_APPS = [
