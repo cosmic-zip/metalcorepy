@@ -27,28 +27,16 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 
-# Default to SQLite unless SQL_ENGINE is explicitly provided
-SQL_ENGINE = os.environ.get('SQL_ENGINE')
-
-if SQL_ENGINE:
-    DATABASES = {
-        'default': {
-            'ENGINE': SQL_ENGINE,
-            'NAME': os.environ.get('POSTGRES_DB', ''),
-            'USER': os.environ.get('POSTGRES_USER', ''),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-            'HOST': os.environ.get('POSTGRES_HOST', ''),
-            'PORT': os.environ.get('POSTGRES_PORT', ''),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE', ''),
+        'NAME': os.environ.get('POSTGRES_DB', ''),
+        'USER': os.environ.get('POSTGRES_USER', ''),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', ''),
+        'PORT': os.environ.get('POSTGRES_PORT', ''),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
+}
 
 # Application definition
 
