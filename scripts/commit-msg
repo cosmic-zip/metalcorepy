@@ -1,0 +1,9 @@
+#!/bin/bash
+# Valida a mensagem de commit usando um script Python
+
+python scripts/commit-msg-validator.py "$1"
+
+if [ $? -ne 0 ]; then
+    echo "❌ Validação da mensagem de commit falhou!"
+    exit 1
+fi

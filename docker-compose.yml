@@ -12,12 +12,11 @@ services:
       - ./.env.dev
     networks:
       default:
-        ipv4_address: 172.28.0.10
+        ipv4_address: 172.18.1.10
 
-  services:
   postgres:
     image: postgres:15
-    container_name: postgres_container
+    container_name: app_db
     restart: always
     environment:
       POSTGRES_USER: root
@@ -25,14 +24,11 @@ services:
       POSTGRES_DB: ecovista
     networks:
       default:
-        ipv4_address: 172.28.0.20
+        ipv4_address: 172.18.1.20
     ports:
       - "5887:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  volumes:
-    database:
+      - ./databse:/var/lib/postgresql/data
 
 networks:
   default:
@@ -40,4 +36,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.28.0.0/16 
+        - subnet: 172.18.0.0/16 
