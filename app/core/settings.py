@@ -53,6 +53,10 @@ else:
 # Application definition
 
 CUSTOM_APPS = [
+    'domains.domain_name'
+]
+
+CORE_APPS = [
     'infrastructure',
     'shared',
     'domains',
@@ -66,7 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + CUSTOM_APPS
+] + CUSTOM_APPS + CORE_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
