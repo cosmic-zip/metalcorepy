@@ -8,3 +8,17 @@ MetalCorePy are a simple fullstack application with stock django and DRF app and
 - `env` files setup
 - database foder for data scripts
 - scripts folder for scripts and helpers
+
+## Install localy 
+
+```console
+python3 -m  venv venv
+source venv/bin/activate
+pip install -m app/requirements.txt
+```
+
+## Run with docker
+
+```console
+docker compose up
+```
