@@ -4,25 +4,22 @@ services:
   web:
     container_name: metalcorepy_app
     build: ./app
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: gunicorn --workers 4 --bind localhost:8000 --timeout 30 --log-level info core.wsgi:application
     volumes:
       - ./app/:/usr/src/app/
     ports:
       - 8000:8000
     env_file:
-      - ./.env.dev
+      - ./.env
 
   postgres:
     image: postgres:15
     container_name: metalcorepy_db
     restart: always
     env_file:
-      - ./.env.dev
+      - ./.env
     ports:
       - "5887:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
 
