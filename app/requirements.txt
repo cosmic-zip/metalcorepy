@@ -22,6 +22,7 @@ django-ninja-extra==0.30.0
 django-ninja-jwt==5.3.7
 fqdn==1.5.1
 graphql-core==3.2.6
+gunicorn==23.0.0
 h11==0.16.0
 harfile==0.3.0
 httpcore==1.0.9

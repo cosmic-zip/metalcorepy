@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   web:
+    container_name: metalcorepy_app
     build: ./app
     command: gunicorn --workers 4 --bind 0.0.0.0:8000 --timeout 30 --log-level info core.wsgi:application
     volumes:
@@ -13,7 +14,7 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: app_db
+    container_name: metalcorepy_db
     restart: always
     env_file:
       - ./.env.dev
