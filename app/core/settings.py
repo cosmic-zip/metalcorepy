@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,6 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE', ''),
+        'NAME': os.environ.get('POSTGRES_DB', ''),
+        'USER': os.environ.get('POSTGRES_USER', ''),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', ''),
+        'PORT': os.environ.get('POSTGRES_PORT', ''),
+    }
+}
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
@@ -48,6 +65,17 @@ CORE_APPS = [
     'infra',
     'shared',
     'domains',
+]
+
+CUSTOM_APPS = [
+    'domains.domain_name'
+]
+
+CORE_APPS = [
+    'infrastructure',
+    'shared',
+    'domains',
+    'interfaces',
 ]
 
 INSTALLED_APPS = [
@@ -121,11 +149,22 @@ LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
 TIME_ZONE = os.environ.get('TIME_ZONE', 'UTC')
 USE_I18N = os.environ.get('USE_I18N', 'True').lower() in ['true', '1', 'yes']
 USE_TZ = os.environ.get('USE_TZ', 'True').lower() in ['true', '1', 'yes']
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
+TIME_ZONE = os.environ.get('TIME_ZONE', 'UTC')
+USE_I18N = os.environ.get('USE_I18N', 'True').lower() in ['true', '1', 'yes']
+USE_TZ = os.environ.get('USE_TZ', 'True').lower() in ['true', '1', 'yes']
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # e.g., project-level /static/ directory
+]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # e.g., project-level /static/ directory
