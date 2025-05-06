@@ -45,10 +45,9 @@ CUSTOM_APPS = [
 ]
 
 CORE_APPS = [
-    'infrastructure',
+    'infra',
     'shared',
     'domains',
-    'interfaces',
 ]
 
 INSTALLED_APPS = [
