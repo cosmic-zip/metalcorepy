@@ -67,17 +67,6 @@ CORE_APPS = [
     'domains',
 ]
 
-CUSTOM_APPS = [
-    'domains.domain_name'
-]
-
-CORE_APPS = [
-    'infrastructure',
-    'shared',
-    'domains',
-    'interfaces',
-]
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

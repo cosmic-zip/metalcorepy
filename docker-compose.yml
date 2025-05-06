@@ -23,6 +23,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: opa
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./security:/policy
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "/policy"
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 
