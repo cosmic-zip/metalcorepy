@@ -10,6 +10,7 @@ from domains.@@appname import views
 urlpatterns = [
     # path('', views.index, name='index'),
 ]
+
 '''
 
 TEMPLATE_OPA = '''from functools import wraps
@@ -35,6 +36,27 @@ def opa_check(policy_path: str):
             return func(request, *args, **kwargs)
         return wrapper
     return decorator
+    
+'''
+
+TEMPLATE_TASKS = '''from celery import shared_task
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+@shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
+def slow_addition(self, x, y):
+    """
+    Performs a slow addition, retrying on failure.
+    - bind=True allows access to self (task instance).
+    - autoretry_for handles automatic retries on exceptions.
+    - retry_backoff adds exponential delay between retries.
+    """
+    logger.info(f"Executing slow addition for {x} + {y}")
+    time.sleep(5)
+    return x + y
+
 '''
 
 class Command(BaseCommand):
@@ -64,7 +86,10 @@ class Command(BaseCommand):
             (base_path / 'tests.py').write_text("from django.test import TestCase\n")
             (base_path / 'urls.py').write_text(template)
             (base_path / 'opa.py').write_text(TEMPLATE_OPA)
+            (base_path / 'tasks.py').write_text(TEMPLATE_TASKS)
             (base_path / 'migrations' / '__init__.py').touch()
+            
+            # chatgpt add a way to RUN BLACK after create the domain
 
             self.stdout.write(self.style.SUCCESS(f"Domain app '{app_name}' created successfully in domains/"))
         except Exception as e:
