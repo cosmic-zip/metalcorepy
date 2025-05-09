@@ -1,6 +1,6 @@
 from functools import wraps
 from ninja.errors import HttpError
-from infrastructure.opa_client import OPAClient
+from infra.security.opa_client import OPAClient
 
 opa = OPAClient()
 
