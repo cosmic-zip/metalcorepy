@@ -65,6 +65,21 @@ services:
       default:
         ipv4_address: 172.28.0.13
 
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: metalcorepy_opa
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./security:/policy
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--addr=:8181"
+      - "/policy"
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 
