@@ -22,6 +22,48 @@ services:
       - "5887:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    
+  redis:
+    image: redis:7
+    container_name: redis_container
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.28.0.11
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    container_name: celery_container
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    networks:
+      default:
+        ipv4_address: 172.28.0.12
+
+  celery-beat:
+    build: .
+    container_name: celery_beat_container
+    command: celery -A core beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - celery
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    networks:
+      default:
+        ipv4_address: 172.28.0.13
 
 volumes:
   postgres_data:
