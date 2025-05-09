@@ -21,8 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
@@ -38,21 +36,6 @@ DATABASES = {
     }
 }
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
-DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
-
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', ''),
-        'NAME': os.environ.get('POSTGRES_DB', ''),
-        'USER': os.environ.get('POSTGRES_USER', ''),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', ''),
-        'PORT': os.environ.get('POSTGRES_PORT', ''),
-    }
-}
 
 # Application definition
 
