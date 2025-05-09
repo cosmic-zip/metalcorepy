@@ -86,7 +86,7 @@ class Command(BaseCommand):
             (base_path / 'tests.py').write_text("from django.test import TestCase\n")
             (base_path / 'urls.py').write_text(template)
             (base_path / 'opa.py').write_text(TEMPLATE_OPA)
-            (base_path / 'tasks.py').write_text(TEMPLATE_TASKS)
+            (base_path / 'services.py').write_text(TEMPLATE_TASKS)
             (base_path / 'migrations' / '__init__.py').touch()
             
             # chatgpt add a way to RUN BLACK after create the domain
