@@ -8,6 +8,7 @@ attrs==25.3.0
 backoff==2.2.1
 bcc==0.1.10
 billiard==4.2.1
+black==25.1.0
 celery==5.3.6
 certifi==2025.4.26
 cffi==1.17.1
@@ -50,8 +51,11 @@ junit-xml==1.9
 kombu==5.5.3
 MarkupSafe==3.0.2
 multidict==6.4.3
+mypy_extensions==1.1.0
 numpy==2.2.5
 packaging==25.0
+pathspec==0.12.1
+platformdirs==4.3.8
 pluggy==1.5.0
 prompt_toolkit==3.0.51
 propcache==0.3.1

@@ -1,4 +1,8 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    PermissionsMixin,
+    BaseUserManager,
+)
 from django.db import models
 from cloudinary.models import CloudinaryField
 from shared.models.time_stamp import TimeStampedModel
@@ -31,10 +35,9 @@ class AbstractUserBase(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:

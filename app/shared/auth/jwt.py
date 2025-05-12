@@ -8,6 +8,7 @@ from ninja.security import HttpBearer
 
 User = get_user_model()
 
+
 class JWTAuth(HttpBearer):
     def authenticate(self, request, token):
         try:
