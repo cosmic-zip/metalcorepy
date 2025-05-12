@@ -25,22 +25,37 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-insecure-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split()
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', ''),
-        'NAME': os.environ.get('POSTGRES_DB', ''),
-        'USER': os.environ.get('POSTGRES_USER', ''),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', ''),
-        'PORT': os.environ.get('POSTGRES_PORT', ''),
+# Check if the app is running in a Docker environment
+DOCKER_ENV = os.getenv('DOCKER_ENV', 'FALSE') == 'TRUE'
+
+# Default database configuration (SQLite for non-Docker environments)
+if DOCKER_ENV:
+    # Database configuration for Docker (PostgreSQL)
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+            'NAME': os.environ.get('POSTGRES_DB', 'your_db_name'),
+            'USER': os.environ.get('POSTGRES_USER', 'your_db_user'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'your_db_password'),
+            'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        }
     }
-}
+else:
+    # Default database configuration for local development (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Application definition
 
 CUSTOM_APPS = [
-    'domains.domain_name'
+    'domains.user'
 ]
 
 CORE_APPS = [
@@ -49,14 +64,14 @@ CORE_APPS = [
     'domains',
 ]
 
-INSTALLED_APPS = [
+INSTALLED_APPS = CORE_APPS + CUSTOM_APPS + [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + CUSTOM_APPS + CORE_APPS
+] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,13 +151,14 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # e.g., project-level /static/ directory
-]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -150,8 +166,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Configuration
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -159,3 +175,6 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # Importar as configurações do Beat
 from .celery_beat import CELERY_BEAT_SCHEDULE
+
+
+AUTH_USER_MODEL = 'user.CustomUser'

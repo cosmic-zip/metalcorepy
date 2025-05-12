@@ -19,45 +19,47 @@ from infra.security.opa_client import OPAClient
 
 opa = OPAClient()
 
-# This is a sample function
-def opa_check(policy_path: str):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(request, *args, **kwargs):
-            input_data = {
-                "user": str(request.user),
-                "path": request.path,
-                "method": request.method,
-                "query": request.GET.dict(),
-            }
-            allowed = opa.evaluate_policy(policy_path, input_data)
-            if not allowed:
-                raise HttpError(403, "Access Denied by OPA Policy")
-            return func(request, *args, **kwargs)
-        return wrapper
-    return decorator
-    
 '''
+# This is a sample function
+# def opa_check(policy_path: str):
+#     def decorator(func):
+#         @wraps(func)
+#         def wrapper(request, *args, **kwargs):
+#             input_data = {
+#                 "user": str(request.user),
+#                 "path": request.path,
+#                 "method": request.method,
+#                 "query": request.GET.dict(),
+#             }
+#             allowed = opa.evaluate_policy(policy_path, input_data)
+#             if not allowed:
+#                 raise HttpError(403, "Access Denied by OPA Policy")
+#             return func(request, *args, **kwargs)
+#         return wrapper
+#     return decorator
+    
+
 
 TEMPLATE_TASKS = '''from celery import shared_task
 import time
 import logging
 
-logger = logging.getLogger(__name__)
-
-@shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
-def slow_addition(self, x, y):
-    """
-    Performs a slow addition, retrying on failure.
-    - bind=True allows access to self (task instance).
-    - autoretry_for handles automatic retries on exceptions.
-    - retry_backoff adds exponential delay between retries.
-    """
-    logger.info(f"Executing slow addition for {x} + {y}")
-    time.sleep(5)
-    return x + y
-
 '''
+
+# logger = logging.getLogger(__name__)
+
+# @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
+# def slow_addition(self, x, y):
+#     """
+#     Performs a slow addition, retrying on failure.
+#     - bind=True allows access to self (task instance).
+#     - autoretry_for handles automatic retries on exceptions.
+#     - retry_backoff adds exponential delay between retries.
+#     """
+#     logger.info(f"Executing slow addition for {x} + {y}")
+#     time.sleep(5)
+#     return x + y
+
 
 class Command(BaseCommand):
     help = 'Create a Django app inside the domains/ directory, with urls.py and without admin.py'
@@ -85,7 +87,7 @@ class Command(BaseCommand):
             (base_path / 'views.py').write_text(f"from django.shortcuts import render\nfrom domains.{app_name}.opa import *\n")
             (base_path / 'tests.py').write_text("from django.test import TestCase\n")
             (base_path / 'urls.py').write_text(template)
-            (base_path / 'opa.py').write_text(TEMPLATE_OPA)
+            (base_path / 'opa.py').write_text("")
             (base_path / 'services.py').write_text(TEMPLATE_TASKS)
             (base_path / 'migrations' / '__init__.py').touch()
             
