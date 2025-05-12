@@ -1,6 +1,6 @@
 # domains/user/views.py
 
-from domains.user.schema import *
+from domains.user.schemas import TokenSchema, LoginSchema
 from ninja import Router, Schema
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
@@ -11,7 +11,6 @@ from shared.auth.jwt import JWTAuth
 
 auth_router = Router(tags=["auth"])
 user_router = Router(auth=JWTAuth(), tags=["user"])
-
 
 
 @auth_router.post("/login", response=TokenSchema)

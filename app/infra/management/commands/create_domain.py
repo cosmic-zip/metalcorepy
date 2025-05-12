@@ -88,6 +88,7 @@ class Command(BaseCommand):
             (base_path / 'tests.py').write_text("from django.test import TestCase\n")
             (base_path / 'urls.py').write_text(template)
             (base_path / 'opa.py').write_text("")
+            (base_path / 'schemas.py').write_text("from ninja import Schema")
             (base_path / 'services.py').write_text(TEMPLATE_TASKS)
             (base_path / 'migrations' / '__init__.py').touch()
             
