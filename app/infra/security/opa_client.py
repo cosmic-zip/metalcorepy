@@ -1,5 +1,6 @@
 import requests
 
+
 class OPAClient:
     def __init__(self, base_url="http://localhost:8181/v1/data"):
         self.base_url = base_url
