@@ -1,81 +1,97 @@
 # MetalCorePy
 
-MetalCorePy are a simple fullstack application with stock django and DRF app and nginx configuration. includes:
+MetalCorePy is a simple fullstack application with a standard Django and DRF app, along with an Nginx configuration. It includes:
 
-- docker compose
-- docker apps
-- the main django core app with DDD
-- `env` files setup
-- database foder for data scripts
-- scripts folder for scripts and helpers
+* docker compose setup
+* dockerized applications
+* the main Django core app using Domain-Driven Design (DDD)
+* `.env` file setup
+* a `database` folder for data-related scripts
+* a `scripts` folder for utility scripts and helpers
 
-## Install localy 
+**Avoid manually modifying containers or images.** Always use the designated commands to ensure consistency and compatibility. If you prefer not to use the dockerized environment, you can run the application using the traditional Python workflow with `virtualenv` and `runserver` — in this mode, the database will automatically fall back to the default **SQLite** backend.
+
+
+## Install Locally
 
 ```console
-python3 -m  venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -m app/requirements.txt
 cp scripts/commit-msg .git/hooks/
 ```
 
-## Run with docker
+## Run with Python
+
+```console
+cd app/
+python manage.py runserver
+```
+
+### Or use the custom `runfull` command to run makemigrations, migrate, and runserver
+
+```console
+cd app/
+python manage.py runfull
+```
+
+## Run with Docker
 
 ```console
 docker compose up
 ```
 
-## Add new app 
-
+## Add a New App
 
 ```console
 python manage.py create_domain domain_name
 ```
 
-## Como rodar as migrations dentro do container?
+## How to Run Migrations Inside the Container?
 
-## Passo 1: Entrar no container
+### Step 1: Enter the Container
 
-Use o nome do container conforme declarado no `docker-compose.yml`. No seu caso:
+Use the container name as declared in `docker-compose.yml`. In this case:
 
 ```bash
 docker exec -it metalcorepy_app bash
 ```
 
-Se estiver usando Alpine ou uma imagem que não tenha `bash`, use:
+If you're using Alpine or an image without `bash`, use:
 
 ```bash
 docker exec -it metalcorepy_app sh
 ```
 
-Agora você está **dentro do ambiente do container Django**, com acesso ao código e ao Python com os pacotes corretos.
+Now you are **inside the Django container environment**, with access to the code and Python environment with all required packages.
 
 ---
 
-## Passo 2: Executar as migrations
+### Step 2: Execute the Migrations
 
-Dentro do container:
+Inside the container:
 
 ```bash
 python manage.py migrate
 ```
 
-Esse comando irá:
+This command will:
 
-* Conectar ao banco PostgreSQL conforme o `.env.dev`
-* Criar as tabelas padrão do Django (auth, admin, etc.)
-* Aplicar quaisquer migrations customizadas dos seus apps
+* Connect to PostgreSQL using the `.env.dev` configuration
+* Create the default Django tables (auth, admin, etc.)
+* Apply any custom migrations from your apps
 
 ---
 
-## Alternativa: rodar direto com `docker compose run`
+### Alternative: Run Directly with `docker compose run`
 
-Se preferir executar em uma linha, **sem entrar no container**, pode usar:
+If you prefer to execute it in a single command without entering the container, you can run:
 
 ```bash
 docker compose exec web python manage.py migrate
 ```
 
-ou, se o serviço se chama `metalcorepy_app`:
+Or, if the service is called `metalcorepy_app`:
 
 ```bash
 docker compose exec metalcorepy_app python manage.py migrate
@@ -83,15 +99,15 @@ docker compose exec metalcorepy_app python manage.py migrate
 
 ---
 
-## Atenção: o banco de dados precisa estar pronto
+### Note: The Database Must Be Ready
 
-Antes de rodar `migrate`, o banco PostgreSQL precisa:
+Before running `migrate`, make sure PostgreSQL is:
 
-* Estar acessível (porta correta)
-* Estar inicializado com o usuário e senha certos
-* Ter o nome do banco criado (o container oficial do PostgreSQL cria automaticamente)
+* Accessible on the correct port
+* Initialized with the correct user and password
+* The database name must already exist (the official PostgreSQL container does this automatically)
 
-Caso o erro persista, execute:
+If errors persist, run:
 
 ```bash
 docker compose logs postgres
